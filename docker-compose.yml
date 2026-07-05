@@ -1,0 +1,4 @@
+name: worklive
+
+# Usługi zostaną dodane po zatwierdzeniu architektury deploymentu.
+services: {}
