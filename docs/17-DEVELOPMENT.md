@@ -1,28 +1,51 @@
 # Development
 
-Projekt używa pnpm 11 oraz Node.js 24. Kod docelowo będzie organizowany w `apps/*` i `packages/*`, bez kopiowania współdzielonych kontraktów. Każdy workspace ma prywatny manifest i korzysta ze wspólnych konfiguracji z `packages/config`.
+Projekt używa Node.js 24, pnpm 11 i monorepo z `apps/*` oraz `packages/*`. Współdzielone konfiguracje należą do `packages/config`, typy do `packages/types`, narzędzia do `packages/utils`, a design system do `packages/ui`.
+
+## Definition of Ready
+
+Funkcja może wejść do developmentu dopiero, gdy:
+
+1. ma opis w dokumentacji;
+2. należy do zatwierdzonego modułu i zakresu etapu;
+3. ma opisane ekrany, akcje, dane, uprawnienia, workflow, stany puste i błędy;
+4. ma oddzielony zakres MVP od przyszłego rozwoju;
+5. decyzje otwarte nie blokują implementowanego zakresu;
+6. wpływ na bazę, API, bezpieczeństwo, backup i design system został opisany;
+7. istotna decyzja architektoniczna ma zaakceptowany ADR.
+
+Brak któregokolwiek wymaganego elementu oznacza powrót do dokumentacji, nie zgodę na uzupełnienie założeń w kodzie.
 
 ## Przepływ pracy
 
-1. Aktualizacja dokumentacji i changelogu.
-2. Akceptacja zakresu oraz ewentualnego ADR.
-3. Mała gałąź i implementacja zgodna z opisem.
-4. Testy, lint, typowanie i przegląd.
-5. Aktualizacja dokumentacji, jeśli implementacja ujawniła nową decyzję.
+1. Utwórz lub zaktualizuj specyfikację modułu z `docs/templates/MODULE_TEMPLATE.md`.
+2. Zaktualizuj dokumenty przekrojowe i changelog, jeśli zmiana ich dotyczy.
+3. Zatwierdź zakres oraz wymagane ADR.
+4. Implementuj wyłącznie zatwierdzony zakres.
+5. Używaj komponentów i tokenów z `packages/ui`.
+6. Uruchom testy, lint, formatowanie, typecheck i build.
+7. Jeśli podczas pracy pojawi się nowa decyzja, przerwij dany fragment i najpierw zaktualizuj docs.
+
+## Granice monorepo
+
+- aplikacje składają zatwierdzone moduły i nie duplikują współdzielonych kontraktów;
+- komponenty wielokrotnego użytku i design tokens należą do `packages/ui`;
+- lokalny komponent UI wymaga wcześniejszej, jawnej decyzji w dokumentacji;
+- aplikacja nie może importować kodu wewnętrznego innej aplikacji;
+- pakiety nie mogą zależeć od aplikacji;
+- nazwy domenowe w kodzie muszą odpowiadać dokumentacji.
 
 ## Narzędzia docelowe
 
-Next.js/React dla webu, NestJS dla API, Expo dla mobile, Electron lub Tauri dla desktopu, Prisma/PostgreSQL dla danych. TanStack Query obsługuje stan serwerowy, React Hook Form formularze, a Zod kontrakty walidacji.
+Next.js i React dla webu, NestJS dla API, Expo dla mobile, Electron lub Tauri dla desktopu oraz Prisma i PostgreSQL dla danych. TanStack Query obsługuje stan serwerowy, React Hook Form formularze, a Zod kontrakty walidacji. Warianty nierozstrzygnięte wymagają ADR.
 
 ## Komendy repozytorium
 
-- `pnpm dev` — uruchamia skrypty developerskie pakietów równolegle;
-- `pnpm build` — buduje wszystkie pakiety w kolejności zależności;
+- `pnpm dev` — uruchamia dostępne skrypty developerskie pakietów;
+- `pnpm build` — sprawdza build workspace;
 - `pnpm lint` — uruchamia ESLint;
-- `pnpm format` / `pnpm format:check` — zapisuje lub sprawdza format Prettier;
-- `pnpm typecheck` — sprawdza TypeScript bez emisji plików;
-- `pnpm clean` — usuwa wyłącznie wygenerowane katalogi projektu.
+- `pnpm format` / `pnpm format:check` — zapisuje lub sprawdza Prettier;
+- `pnpm typecheck` — sprawdza TypeScript bez emisji;
+- `pnpm clean` — usuwa wygenerowane artefakty.
 
-Instalacja uruchamia `husky`, a hook pre-commit przekazuje staged pliki do `lint-staged`. CI wykonuje instalację z zamrożonym lockfile, lint, kontrolę formatowania, typecheck i build.
-
-Strategia gałęzi i narzędzia testowe zostaną ustalone przed inicjalizacją kodu aplikacji.
+CI instaluje zamrożony lockfile i uruchamia kontrolę formatowania, lint, typecheck oraz build. Husky i lint-staged zabezpieczają staged pliki lokalnie.
