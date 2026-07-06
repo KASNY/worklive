@@ -39,6 +39,10 @@ Brak któregokolwiek wymaganego elementu oznacza powrót do dokumentacji, nie zg
 
 Next.js i React dla webu, NestJS dla API, Expo dla mobile, Electron lub Tauri dla desktopu oraz Prisma i PostgreSQL dla danych. TanStack Query obsługuje stan serwerowy, React Hook Form formularze, a Zod kontrakty walidacji. Warianty nierozstrzygnięte wymagają ADR.
 
+## Stan aplikacji workspace
+
+Etap 1 używa Next.js 16, React 19, Tailwind CSS 4, next-themes i Lucide. `apps/workspace` ma działające polecenia `dev`, `build`, `start`, `lint` i `typecheck`. Frontend korzysta z `@worklive/ui`; nie zawiera backendu, bazy danych ani prawdziwej autoryzacji.
+
 ## Komendy repozytorium
 
 - `pnpm dev` — uruchamia dostępne skrypty developerskie pakietów;

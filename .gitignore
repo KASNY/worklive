@@ -5,6 +5,7 @@ build/
 .expo/
 coverage/
 .eslintcache
+*.tsbuildinfo
 
 .env
 .env.*
